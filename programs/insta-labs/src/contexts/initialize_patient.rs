@@ -7,9 +7,9 @@ pub struct InitializePatient<'info> {
     pub upid: Signer<'info>,
     #[account(
         init, 
-        payer = admin, 
-        space = 2048, 
-        seeds = [b"patient", upid.key().as_ref()], 
+        payer = admin,
+        space = 2048,
+        seeds = [b"patient", upid.key().to_bytes().as_ref()],
         bump,
     )]
     pub patient_data: Account<'info, PatientData>, // On-chain storage for patient
