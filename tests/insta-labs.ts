@@ -31,6 +31,48 @@ describe("insta-labs", () => {
       admin: admin.publicKey,
       systemProgram: SystemProgram.programId,
     }).rpc();
-    console.log("✅ Transaction Signature:s", tx);
+    console.log("✅ Transaction Signature", tx);
+
+  });
+  it("✅ Should store test results for the patient", async () => {
+
+    const [patientPDA] = await PublicKey.findProgramAddress(
+      [
+        Buffer.from("patient"), 
+        Buffer.from(testUPID, "utf8") // ✅ Ensure UTF-8 encoding
+      ],
+      program.programId
+    );;
+    // Define test data (multiple blood parameters)
+    const testID = "BLOOD-001";
+    const timestamp = new anchor.BN(Date.now());
+    const hemoglobin = 13.5;
+    const rbcCount = 4.8;
+    const wbcCount = 6700;
+    const plateletCount = 250000;
+    const mcv = 90.0;
+    const mch = 30.5;
+    const mchc = 34.0;
+
+    // 7️⃣ Send transaction to store test results
+    const tx = await program.methods
+      .storeTestResults(
+        testID,
+        timestamp,
+        hemoglobin,
+        rbcCount,
+        wbcCount,
+        plateletCount,
+        mcv,
+        mch,
+        mchc
+      )
+      .accounts({
+        patient_data: patientPDA,
+        admin: admin.publicKey, 
+      })
+      .rpc();
+
+    console.log("✅ Test Results Stored - Transaction Signature:", tx);
   });
 });

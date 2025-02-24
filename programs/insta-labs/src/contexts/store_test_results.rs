@@ -6,7 +6,7 @@ use crate::error::Errors; // Importing state structures
 pub struct StoreTestResults<'info> {
     #[account(
         mut, 
-        seeds = [b"patient", patient_data.upid.as_bytes().as_ref()], 
+        seeds = [b"patient", patient_data.upid.as_bytes().as_ref()],   
         bump
     )]
     pub patient_data: Account<'info, PatientData>, // Patient's on-chain record
@@ -15,24 +15,17 @@ pub struct StoreTestResults<'info> {
 }
 
 pub fn store_test_results(
-    ctx: Context<StoreTestResults>, 
-    test_id: String, 
-    test_type: String, 
+    ctx: Context<StoreTestResults>,
+    test_id: String,  
+    _timestamp: i64,
     haemoglobin: Option<f32>,
     rbc_count: Option<f32>,
     wbc_count: Option<f32>,
     platelet_count: Option<f32>,
-    hematocrit: Option<f32>,
     mcv: Option<f32>,
     mch: Option<f32>,
     mchc: Option<f32>,
-    rdw: Option<f32>,
-    neutrophils: Option<f32>,
-    lymphocytes: Option<f32>,
-    monocytes: Option<f32>,
-    eosinophils: Option<f32>,
-    basophils: Option<f32>,
-    additional_notes: Option<String>
+
 ) -> Result<()> {
     let patient_data = &mut ctx.accounts.patient_data;
 
@@ -40,23 +33,15 @@ pub fn store_test_results(
 
     patient_data.tests.push(TestResult {
         test_id,
-        test_type,
         timestamp: Clock::get()?.unix_timestamp,
         haemoglobin,
         rbc_count,
         wbc_count,
         platelet_count,
-        hematocrit,
         mcv,
         mch,
         mchc,
-        rdw,
-        neutrophils,
-        lymphocytes,
-        monocytes,
-        eosinophils,
-        basophils,
-        additional_notes,
+
     });
 
     msg!("Blood test result added for UPID: {}", patient_data.upid);
