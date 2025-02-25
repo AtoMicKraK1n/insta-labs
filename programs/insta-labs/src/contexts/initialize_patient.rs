@@ -7,16 +7,17 @@ pub struct InitializePatient<'info> {
     pub upid: Signer<'info>,
     #[account(
         init, 
-        payer = admin,
-        space = 2048,
+        payer = admin, 
+        space = 2048, 
         seeds = [b"patient", upid.key().to_bytes().as_ref()],
-        bump,
+        bump
     )]
-    pub patient_data: Account<'info, PatientData>, // On-chain storage for patient
+    pub patient_data: Account<'info, PatientData>,  
     #[account(mut)]
-    pub admin: Signer<'info>, // Only the admin (program deployer) can create patient records
-    pub system_program: Program<'info, System>, // Solana system program
+    pub admin: Signer<'info>, 
+    pub system_program: Program<'info, System>,
 }
+
 
 pub fn initialize_patient(ctx: Context<InitializePatient>, upid: String) -> Result<()> {
     let patient_data = &mut ctx.accounts.patient_data;

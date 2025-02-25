@@ -7,3 +7,12 @@ pub struct PatientData {
     pub admin: Pubkey,            // Admin who created this patient record
     pub tests: Vec<TestResult>,   // List of stored lab test results
 }
+
+impl PatientData {
+    pub fn space(max_tests: usize) -> usize {
+        8  // Discriminator
+        + 4 + 64  // UPID (max 64 bytes + 4 for string length)
+        + 32  // Admin Pubkey
+        + 4 + (TestResult::size() * max_tests) // Vec<TestResult> (4 bytes for length + each test entry)
+    }
+}

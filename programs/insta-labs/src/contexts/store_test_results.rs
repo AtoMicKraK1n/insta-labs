@@ -1,18 +1,22 @@
 use anchor_lang::prelude::*;
 use crate::state::{patient_data::PatientData, test_result::TestResult};
-use crate::error::Errors; // Importing state structures
+use crate::error::Errors; 
 
 #[derive(Accounts)]
 pub struct StoreTestResults<'info> {
     #[account(
         mut, 
-        seeds = [b"patient", patient_data.upid.as_bytes().as_ref()],   
+        seeds = [b"patient", patient_data.upid.as_bytes()],   
         bump
     )]
-    pub patient_data: Account<'info, PatientData>, // Patient's on-chain record
+    pub patient_data: Account<'info, PatientData>, 
+    #[account(mut)]
+    pub upid: Signer<'info>,// Patient's on-chain record
     #[account(mut)]
     pub admin: Signer<'info>, // Only the admin can store test results
+    pub system_program: Program<'info, System>,
 }
+
 
 pub fn store_test_results(
     ctx: Context<StoreTestResults>,
@@ -30,6 +34,12 @@ pub fn store_test_results(
     let patient_data = &mut ctx.accounts.patient_data;
 
     require!(ctx.accounts.admin.key() == patient_data.admin, Errors::UnauthorizedAccess);
+
+    const MAX_TESTS: usize = 9;
+
+    if patient_data.tests.len() >= MAX_TESTS {
+        patient_data.tests.remove(0); // ✅ Remove the oldest test to make space
+    }
 
     patient_data.tests.push(TestResult {
         test_id,

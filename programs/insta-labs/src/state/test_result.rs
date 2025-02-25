@@ -12,3 +12,11 @@ pub struct TestResult {
     pub mch: Option<f32>,        // Mean Corpuscular Hemoglobin (pg)
     pub mchc: Option<f32>,       // Mean Corpuscular Hemoglobin Concentration (g/dL)
 }
+
+impl TestResult {
+    pub fn size() -> usize {
+        4 + 32  // test_id (4 bytes for length + max 32 chars)
+        + 4 + 32  // test_type (4 bytes for length + max 32 chars)
+        + 4 + 4 + 4  // Optional f32 fields (each takes 4 bytes)
+    }
+}
