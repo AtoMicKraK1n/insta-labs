@@ -13,16 +13,15 @@ describe("insta-labs", async () => {
 
   const UPID = "TEST-12345"; //Unique-Patient ID
 
-  const [patientPDA] = await PublicKey.findProgramAddress(
+  const [patientPDA] = PublicKey.findProgramAddressSync(
     [
       Buffer.from("patient"), 
-      Buffer.from(UPID, "utf8") // ✅ Ensure UTF-8 encoding
+      Buffer.from(UPID) // ✅ Ensure UTF-8 encoding
     ],
     program.programId
-  );;
+  );
 
   const admin = Keypair.generate();
-  const upid = Keypair.generate();
 
   before(async () => {
 
@@ -30,29 +29,34 @@ describe("insta-labs", async () => {
     await provider.connection.requestAirdrop(admin.publicKey, 10 * LAMPORTS_PER_SOL)
   );
 
-  await provider.connection.confirmTransaction(
-    await provider.connection.requestAirdrop(upid.publicKey, 10 * LAMPORTS_PER_SOL)
-  );
 });
-
-  it("Should initialize a new patient record", async () => {
+  
+it("Should initialize a new patient record", async () => {
     // 3️⃣ Derive PDA for the patient account
     
-
+  try {
     console.log(`📌 Patient PDA: ${patientPDA.toBase58()}`);
     // Add your test here.
-    const tx = await program.methods.initializePatient(UPID).accounts({
-      upid: upid.publicKey,
-      patient_data: patientPDA,
-      admin: admin.publicKey,
-      systemProgram: SystemProgram.programId,
-    })
-    .signers([upid, admin])
+    const tx = await program.methods.initializePatient(UPID).accountsStrict(
+      {
+        admin: admin.publicKey,
+        patientData: patientPDA,
+        systemProgram: SystemProgram.programId,
+      }
+    
+    )
+    .signers([admin])
     .rpc();
     console.log("✅ Transaction Signature", tx);
 
-
+  }
+    catch (error) {
+      console.error ("❌ Error:", error);
+    }
+      
   });
+
+
   it("✅ Should store test results for the patient", async () => {
 
     // Define test data (multiple blood parameters)
@@ -80,12 +84,11 @@ describe("insta-labs", async () => {
         mchc
       )
       .accountsStrict({
-        patientData: patientPDA,
-        upid: upid.publicKey,
         admin: admin.publicKey,
+        patientData: patientPDA,
         systemProgram: SystemProgram.programId,
       })
-      .signers([upid, admin])
+      .signers([admin])
       .rpc();
 
     console.log("✅ Test Results Stored - Transaction Signature:", tx);

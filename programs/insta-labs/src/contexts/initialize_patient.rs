@@ -1,26 +1,26 @@
-use anchor_lang::prelude::*;
+use anchor_lang::{prelude::*, Bump};
 use crate::state::PatientData;
 
 #[derive(Accounts)]
+#[instruction(upid: String)]
 pub struct InitializePatient<'info> {
     #[account(mut)]
-    pub upid: Signer<'info>,
+    pub admin: Signer<'info>, 
     #[account(
         init, 
-        payer = admin, 
+        payer = admin,
         space = 2048, 
-        seeds = [b"patient", upid.key().to_bytes().as_ref()],
+        seeds = [b"patient", upid.as_bytes().as_ref()],
         bump
     )]
     pub patient_data: Account<'info, PatientData>,  
-    #[account(mut)]
-    pub admin: Signer<'info>, 
     pub system_program: Program<'info, System>,
 }
 
 
 pub fn initialize_patient(ctx: Context<InitializePatient>, upid: String) -> Result<()> {
     let patient_data = &mut ctx.accounts.patient_data;
+    patient_data.bump = ctx.bumps.patient_data;
     patient_data.upid = upid;
     patient_data.admin = ctx.accounts.admin.key();
     patient_data.tests = Vec::new(); // Initialize an empty test record list

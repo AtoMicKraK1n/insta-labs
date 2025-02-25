@@ -6,12 +6,10 @@ use crate::error::Errors;
 pub struct StoreTestResults<'info> {
     #[account(
         mut, 
-        seeds = [b"patient", patient_data.upid.as_bytes()],   
-        bump
+        seeds = [b"patient", patient_data.upid.as_bytes().as_ref()],   
+        bump = patient_data.bump,
     )]
     pub patient_data: Account<'info, PatientData>, 
-    #[account(mut)]
-    pub upid: Signer<'info>,// Patient's on-chain record
     #[account(mut)]
     pub admin: Signer<'info>, // Only the admin can store test results
     pub system_program: Program<'info, System>,
