@@ -1,3 +1,5 @@
+use std::collections::btree_map::Values;
+
 use anchor_lang::prelude::*;
 use crate::state::{patient_data::PatientData, test_result::TestResult};
 use crate::error::Errors; 
@@ -19,19 +21,25 @@ pub struct StoreTestResults<'info> {
 pub fn store_test_results(
     ctx: Context<StoreTestResults>,
     test_id: String,  
-    _timestamp: i64,
-    haemoglobin: Option<f32>,
-    rbc_count: Option<f32>,
-    wbc_count: Option<f32>,
-    platelet_count: Option<f32>,
-    mcv: Option<f32>,
-    mch: Option<f32>,
-    mchc: Option<f32>,
+    timestamp: i64,
+    haemoglobin: Option<u32>,
+    rbc_count: Option<u32>,
+    wbc_count: Option<u32>,
+    platelet_count: Option<u32>,
+    mcv: Option<u32>,
+    mch: Option<u32>,
+    mchc: Option<u32>,
 
 ) -> Result<()> {
     let patient_data = &mut ctx.accounts.patient_data;
 
     require!(ctx.accounts.admin.key() == patient_data.admin, Errors::UnauthorizedAccess);
+
+    let haemoglobin_scaled = haemoglobin.map(|value| TestResult::scale_up (value as f32));
+    let rbc_count_scaled = rbc_count.map(|value| TestResult::scale_up (value as f32));
+    let mcv_scaled = mcv.map(|value| TestResult::scale_up (value as f32));
+    let mch_scaled  =mch.map(|value| TestResult::scale_up (value as f32));
+    let mchc_scaled = mchc.map(|value| TestResult::scale_up (value as f32));
 
     const MAX_TESTS: usize = 9;
 
@@ -42,13 +50,13 @@ pub fn store_test_results(
     patient_data.tests.push(TestResult {
         test_id,
         timestamp: Clock::get()?.unix_timestamp,
-        haemoglobin,
-        rbc_count,
+        haemoglobin: haemoglobin_scaled,
+        rbc_count: rbc_count_scaled,
         wbc_count,
         platelet_count,
-        mcv,
-        mch,
-        mchc,
+        mcv: mcv_scaled,
+        mch: mch_scaled,
+        mchc: mchc_scaled,
 
     });
 

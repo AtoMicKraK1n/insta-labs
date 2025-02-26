@@ -4,13 +4,13 @@ use anchor_lang::prelude::*;
 pub struct TestResult {
     pub test_id: String,       // Unique Test ID     // Type of test (Blood, Urine, Imaging)
     pub timestamp: i64,        // Time of test entry
-    pub haemoglobin: Option<f32>,  // Hemoglobin Level (g/dL)
-    pub rbc_count: Option<f32>,   // Red Blood Cell Count (million/µL)
-    pub wbc_count: Option<f32>,   // White Blood Cell Count (thousands/µL)
-    pub platelet_count: Option<f32>, // Platelet Count (per µL)
-    pub mcv: Option<f32>,        // Mean Corpuscular Volume (fL)
-    pub mch: Option<f32>,        // Mean Corpuscular Hemoglobin (pg)
-    pub mchc: Option<f32>,       // Mean Corpuscular Hemoglobin Concentration (g/dL)
+    pub haemoglobin: Option<u32>,  // Hemoglobin Level (g/dL)
+    pub rbc_count: Option<u32>,   // Red Blood Cell Count (million/µL)
+    pub wbc_count: Option<u32>,   // White Blood Cell Count (thousands/µL)
+    pub platelet_count: Option<u32>, // Platelet Count (per µL)
+    pub mcv: Option<u32>,        // Mean Corpuscular Volume (fL)
+    pub mch: Option<u32>,        // Mean Corpuscular Hemoglobin (pg)
+    pub mchc: Option<u32>,       // Mean Corpuscular Hemoglobin Concentration (g/dL)
 }
 
 impl TestResult {
@@ -18,5 +18,13 @@ impl TestResult {
         4 + 32  // test_id (4 bytes for length + max 32 chars)
         + 4 + 32  // test_type (4 bytes for length + max 32 chars)
         + 4 + 4 + 4  // Optional f32 fields (each takes 4 bytes)
+    }
+
+    pub fn scale_up(value: f32) -> u32 {
+        (value * 10.0) as u32
+    } 
+
+    pub fn scale_down(value: u32) -> f32 {
+        value as f32 / 10.0
     }
 }

@@ -24,13 +24,13 @@ pub mod insta_labs {
         ctx: Context<StoreTestResults>, 
         test_id: String, 
         timestamp: i64,
-        haemoglobin: Option<f32>,
-        rbc_count: Option<f32>,
-        wbc_count: Option<f32>,
-        platelet_count: Option<f32>,
-        mcv: Option<f32>,
-        mch: Option<f32>,
-        mchc: Option<f32>,
+        haemoglobin: Option<u32>,
+        rbc_count: Option<u32>,
+        wbc_count: Option<u32>,
+        platelet_count: Option<u32>,
+        mcv: Option<u32>,
+        mch: Option<u32>,
+        mchc: Option<u32>,
 
     ) -> Result<()> {
         store_test_results::store_test_results(
