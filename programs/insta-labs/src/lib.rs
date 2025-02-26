@@ -31,11 +31,17 @@ pub mod insta_labs {
         mcv: Option<u32>,
         mch: Option<u32>,
         mchc: Option<u32>,
+        rdw: Option<u32>,
+        neutrophils: Option<u32>,
+        lymphocytes: Option<u32>,
+        monocytes: Option<u32>,
+        eosinophils: Option<u32>,
+        basophils: Option<u32>
 
     ) -> Result<()> {
         store_test_results::store_test_results(
             ctx, test_id, timestamp, haemoglobin, rbc_count, wbc_count, platelet_count, 
-            mcv, mch, mchc
+            mcv, mch, mchc, rdw, neutrophils, lymphocytes, monocytes, eosinophils, basophils
         )
     }
 

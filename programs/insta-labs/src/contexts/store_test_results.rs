@@ -29,6 +29,13 @@ pub fn store_test_results(
     mcv: Option<u32>,
     mch: Option<u32>,
     mchc: Option<u32>,
+    rdw: Option<u32>,
+    neutrophils: Option<u32>,
+    lymphocytes: Option<u32>,
+    monocytes: Option<u32>,
+    eosinophils: Option<u32>,
+    basophils: Option<u32>,  
+
 
 ) -> Result<()> {
     let patient_data = &mut ctx.accounts.patient_data;
@@ -40,6 +47,12 @@ pub fn store_test_results(
     let mcv_scaled = mcv.map(|value| TestResult::scale_up (value as f32));
     let mch_scaled  =mch.map(|value| TestResult::scale_up (value as f32));
     let mchc_scaled = mchc.map(|value| TestResult::scale_up (value as f32));
+    let rdw_scaled = rdw.map(|value| TestResult::scale_up (value as f32));
+    let neutrophils_scaled = neutrophils.map(|value| TestResult::scale_up (value as f32));
+    let lymphocytes_scaled = lymphocytes.map(|value| TestResult::scale_up (value as f32));
+    let monocytes_scaled = monocytes.map(|value| TestResult::scale_up (value as f32));
+    let eosinophils_scaled = eosinophils.map(|value| TestResult::scale_up (value as f32));
+    let basophils_scaled = basophils.map(|value| TestResult::scale_up (value as f32));
 
     const MAX_TESTS: usize = 9;
 
@@ -57,6 +70,12 @@ pub fn store_test_results(
         mcv: mcv_scaled,
         mch: mch_scaled,
         mchc: mchc_scaled,
+        rdw: rdw_scaled,
+        neutrophils: neutrophils_scaled,
+        lymphocytes: lymphocytes_scaled,
+        monocytes: monocytes_scaled,
+        eosinophils: eosinophils_scaled,
+        basophils: basophils_scaled,
 
     });
 

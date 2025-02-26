@@ -78,6 +78,13 @@ it("Should initialize a new patient record", async () => {
     const mcv = scaleUp(90.0);
     const mch = scaleUp(30.5);
     const mchc = scaleUp(34.0);
+    const rdw = scaleUp(12.5);
+    const neutrophils = scaleUp(55.0);
+    const lymphocytes = scaleUp(35.0);
+    const monocytes = scaleUp(7.0);
+    const eosinophils = scaleUp(3.0);
+    const basophils = scaleUp(0.5);
+    
 
     // 7️⃣ Send transaction to store test results
     const tx = await program.methods
@@ -90,7 +97,13 @@ it("Should initialize a new patient record", async () => {
         plateletCount,
         mcv,
         mch,
-        mchc
+        mchc,
+        rdw,
+        neutrophils,
+        lymphocytes,
+        monocytes,
+        eosinophils,
+        basophils
       )
       .accountsStrict({
         admin: admin.publicKey,
@@ -105,16 +118,22 @@ it("Should initialize a new patient record", async () => {
 
   it("✅ Should retrieve test results for the patient", async () => {
     const testResults = await program.account.patientData.fetch(patientPDA);
-
+  
     console.log("Retrieved Tests Results:", testResults);
 
-    const retrievedHaemoglobin = scaleDown(testResults.tests[0].haemoglobin / 10);
+    const retrievedHaemoglobin = scaleDown(testResults.tests[0].haemoglobin / 10); 
     const retrievedRbcCount = scaleDown(testResults.tests[0].rbcCount / 10);
     const retrievedMcv = scaleDown(testResults.tests[0].mcv / 10);
     const retrievedMch = scaleDown(testResults.tests[0].mch / 10);
     const retrievedMchc = scaleDown(testResults.tests[0].mchc / 10);
+    const rerievedRdw = scaleDown(testResults.tests[0].rdw / 10);
+    const retrievedNeutrophils = scaleDown(testResults.tests[0].neutrophils / 10);
+    const retrievedLymphocytes = scaleDown(testResults.tests[0].lymphocytes / 10);
+    const retrievedMonocytes = scaleDown(testResults.tests[0].monocytes / 10);
+    const retrievedEosinophils = scaleDown(testResults.tests[0].eosinophils / 10);
+    const retrievedBasophils = scaleDown(testResults.tests[0].basophils / 10);
 
-    expect(testResults.tests.length).to.equal(1); // Ensure one test is retrieved
+    expect(testResults.tests.length).to.equal(1);
     expect(testResults.tests[0].testId).to.equal("BLOOD-001");
     expect(retrievedHaemoglobin).to.equal(13.5);
     expect(retrievedRbcCount).to.equal(4.8);
@@ -122,7 +141,12 @@ it("Should initialize a new patient record", async () => {
     expect(testResults.tests[0].plateletCount).to.equal(250000);
     expect(retrievedMcv).to.equal(90.0);
     expect(retrievedMch).to.equal(30.5);
-    expect(retrievedMchc).to.equal(34.0);
-    
+    expect(retrievedMchc).to.equal(34.0);   
+    expect(rerievedRdw).to.equal(12.5);
+    expect(retrievedNeutrophils).to.equal(55.0);
+    expect(retrievedLymphocytes).to.equal(35.0);
+    expect(retrievedMonocytes).to.equal(7.0);
+    expect(retrievedEosinophils).to.equal(3.0);
+    expect(retrievedBasophils).to.equal(0.5);
   })
 });

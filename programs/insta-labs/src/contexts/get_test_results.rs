@@ -24,7 +24,13 @@ pub fn get_test_results(ctx: Context<GetTestResults>) -> Result<Vec<TestResult>>
             platelet_count: test.platelet_count.clone(),
             mcv: test.mcv.map(TestResult::scale_down).map(|value| value as u32),
             mch: test.mch.map(TestResult::scale_down).map(|value| value as u32),
-            mchc: test.mchc.map(TestResult::scale_down).map(|value| value as u32)
+            mchc: test.mchc.map(TestResult::scale_down).map(|value| value as u32),
+            rdw: test.rdw.map(TestResult::scale_down).map(|value| value as u32),
+            neutrophils: test.neutrophils.map(TestResult::scale_down).map(|value| value as u32),
+            lymphocytes: test.lymphocytes.map(TestResult::scale_down).map(|value| value as u32),
+            monocytes: test.monocytes.map(TestResult::scale_down).map(|value| value as u32),
+            eosinophils: test.eosinophils.map(TestResult::scale_down).map(|value| value as u32),
+            basophils: test.basophils.map(TestResult::scale_down).map(|value| value as u32),
 
         });
     }

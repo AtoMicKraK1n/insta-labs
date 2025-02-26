@@ -10,7 +10,13 @@ pub struct TestResult {
     pub platelet_count: Option<u32>, // Platelet Count (per µL)
     pub mcv: Option<u32>,        // Mean Corpuscular Volume (fL)
     pub mch: Option<u32>,        // Mean Corpuscular Hemoglobin (pg)
-    pub mchc: Option<u32>,       // Mean Corpuscular Hemoglobin Concentration (g/dL)
+    pub mchc: Option<u32>,   
+    pub rdw: Option<u32>,
+    pub neutrophils: Option<u32>,
+    pub lymphocytes: Option<u32>,
+    pub monocytes: Option<u32>,
+    pub eosinophils: Option<u32>,
+    pub basophils: Option<u32>,   
 }
 
 impl TestResult {
