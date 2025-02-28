@@ -48,7 +48,7 @@ pub fn store_test_results(
     require!(ctx.accounts.admin.key() == patient_data.admin, Errors::UnauthorizedAccess);
 
     let haemoglobin_scaled = haemoglobin.map(|value| TestResult::scale_up (value as f32));
-    let rbc_count_scaled = rbc_count.map(|value| TestResult::scale_up (value as f32));
+    let rbc_count_scaled: Option<u32> = rbc_count.map(|value| TestResult::scale_up (value as f32));
     let mcv_scaled = mcv.map(|value| TestResult::scale_up (value as f32));
     let mch_scaled  =mch.map(|value| TestResult::scale_up (value as f32));
     let mchc_scaled = mchc.map(|value| TestResult::scale_up (value as f32));

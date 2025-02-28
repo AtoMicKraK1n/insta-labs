@@ -12,7 +12,7 @@ insta_labs = "9tNAK3cjM1HKEd2ijZZpwF4LN84Kbq1eKR3LhvRC8HD5"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
