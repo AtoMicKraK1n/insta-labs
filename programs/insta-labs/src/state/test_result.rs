@@ -3,7 +3,8 @@ use anchor_lang::prelude::*;
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
 pub struct TestResult {
     pub test_id: String,
-    pub test_type: String,         
+    pub test_type: String,
+    pub path_lab_name: String, 
     pub timestamp: i64,  
 
     // Blood Test Fields

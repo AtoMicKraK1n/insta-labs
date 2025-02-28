@@ -22,6 +22,7 @@ pub fn store_test_results(
     ctx: Context<StoreTestResults>,
     test_id: String,  
     test_type: String,
+    path_lab_name: String,
     timestamp: i64,
     haemoglobin: Option<u32>,
     rbc_count: Option<u32>,
@@ -71,6 +72,7 @@ pub fn store_test_results(
     patient_data.tests.push(TestResult {
         test_id,
         test_type,
+        path_lab_name,
         timestamp: Clock::get()?.unix_timestamp,
         haemoglobin: haemoglobin_scaled,
         rbc_count: rbc_count_scaled,

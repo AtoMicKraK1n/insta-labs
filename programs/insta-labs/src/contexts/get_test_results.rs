@@ -19,6 +19,7 @@ pub fn get_test_results(ctx: Context<GetTestResults>) -> Result<Vec<TestResult>>
             test_id: test.test_id.clone(),
             test_type: test.test_type.clone(),
             timestamp: test.timestamp.clone(),
+            path_lab_name: test.path_lab_name.clone(),
             haemoglobin: test.haemoglobin.map(TestResult::scale_down).map(|value| value as u32),
             rbc_count: test.rbc_count.map(TestResult::scale_down).map(|value| value as u32),
             wbc_count: test.wbc_count.clone(),
