@@ -21,6 +21,7 @@ pub struct StoreTestResults<'info> {
 pub fn store_test_results(
     ctx: Context<StoreTestResults>,
     test_id: String,  
+    test_type: String,
     timestamp: i64,
     haemoglobin: Option<u32>,
     rbc_count: Option<u32>,
@@ -36,6 +37,9 @@ pub fn store_test_results(
     eosinophils: Option<u32>,
     basophils: Option<u32>,  
 
+    ph_level: Option<u32>,
+    protein: Option<u32>,
+    glucose: Option<u32>,
 
 ) -> Result<()> {
     let patient_data = &mut ctx.accounts.patient_data;
@@ -54,6 +58,10 @@ pub fn store_test_results(
     let eosinophils_scaled = eosinophils.map(|value| TestResult::scale_up (value as f32));
     let basophils_scaled = basophils.map(|value| TestResult::scale_up (value as f32));
 
+    let ph_level_scaled = ph_level.map(|value| TestResult::scale_up(value as f32));
+    let protein_scaled = protein.map(|value| TestResult::scale_up(value as f32));
+    let glucose_scaled = glucose.map(|value| TestResult::scale_up(value as f32));
+
     const MAX_TESTS: usize = 9;
 
     if patient_data.tests.len() >= MAX_TESTS {
@@ -62,6 +70,7 @@ pub fn store_test_results(
 
     patient_data.tests.push(TestResult {
         test_id,
+        test_type,
         timestamp: Clock::get()?.unix_timestamp,
         haemoglobin: haemoglobin_scaled,
         rbc_count: rbc_count_scaled,
@@ -76,6 +85,10 @@ pub fn store_test_results(
         monocytes: monocytes_scaled,
         eosinophils: eosinophils_scaled,
         basophils: basophils_scaled,
+
+        ph_level: ph_level_scaled,
+        protein: protein_scaled,
+        glucose: glucose_scaled,
 
     });
 

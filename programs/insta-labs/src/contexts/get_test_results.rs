@@ -17,6 +17,7 @@ pub fn get_test_results(ctx: Context<GetTestResults>) -> Result<Vec<TestResult>>
     for test in &patient_data.tests {
         formatted_tests.push(TestResult {
             test_id: test.test_id.clone(),
+            test_type: test.test_type.clone(),
             timestamp: test.timestamp.clone(),
             haemoglobin: test.haemoglobin.map(TestResult::scale_down).map(|value| value as u32),
             rbc_count: test.rbc_count.map(TestResult::scale_down).map(|value| value as u32),
@@ -32,6 +33,9 @@ pub fn get_test_results(ctx: Context<GetTestResults>) -> Result<Vec<TestResult>>
             eosinophils: test.eosinophils.map(TestResult::scale_down).map(|value| value as u32),
             basophils: test.basophils.map(TestResult::scale_down).map(|value| value as u32),
 
+            ph_level: test.ph_level.map(TestResult::scale_down).map(|value| value as u32),
+            protein: test.protein.map(TestResult::scale_down).map(|value| value as u32),
+            glucose: test.glucose.map(TestResult::scale_down).map(|value| value as u32),
         });
     }
 

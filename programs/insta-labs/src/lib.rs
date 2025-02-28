@@ -23,6 +23,7 @@ pub mod insta_labs {
     pub fn store_test_results(
         ctx: Context<StoreTestResults>, 
         test_id: String, 
+        test_type: String,
         timestamp: i64,
         haemoglobin: Option<u32>,
         rbc_count: Option<u32>,
@@ -36,12 +37,16 @@ pub mod insta_labs {
         lymphocytes: Option<u32>,
         monocytes: Option<u32>,
         eosinophils: Option<u32>,
-        basophils: Option<u32>
+        basophils: Option<u32>,
+
+        ph_level: Option<u32>,
+        protien: Option<u32>,
+        glucose: Option<u32>
 
     ) -> Result<()> {
         store_test_results::store_test_results(
-            ctx, test_id, timestamp, haemoglobin, rbc_count, wbc_count, platelet_count, 
-            mcv, mch, mchc, rdw, neutrophils, lymphocytes, monocytes, eosinophils, basophils
+            ctx, test_id, test_type, timestamp, haemoglobin, rbc_count, wbc_count, platelet_count, 
+            mcv, mch, mchc, rdw, neutrophils, lymphocytes, monocytes, eosinophils, basophils, ph_level, protien, glucose
         )
     }
 
